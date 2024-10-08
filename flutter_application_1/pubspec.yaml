@@ -1,0 +1,28 @@
+name: flutter_application_1
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Aquí se añaden los assets, incluyendo la ruta de la imagen
+  assets:
+    - lib/assets/Images/Malaga.jpg
+    - lib/assets/Images/Cadiz.jpeg
+    - lib/assets/Images/Granada.webp

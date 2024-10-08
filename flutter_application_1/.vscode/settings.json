@@ -1,0 +1,5 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "cmake.options.statusBarVisibility": "visible",
+    "cmake.sourceDirectory": "C:/Users/Alvaro/Documents/flutter/flutter_application_1/windows/runner"
+}
