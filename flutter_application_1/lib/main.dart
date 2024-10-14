@@ -141,9 +141,9 @@ class RowImagesScreen extends StatelessWidget {
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Image.asset('lib/assets/Images/Malaga.jpg', width: 200, height: 200),
-          Image.asset('lib/assets/Images/Granada.webp', width: 200, height: 200),
-          Image.asset('lib/assets/Images/Cadiz.jpeg', width: 200, height: 200),
+          Image.asset('lib/assets/Images/Malaga.jpg', width: 100, height: 100),
+          Image.asset('lib/assets/Images/Granada.webp', width: 100, height: 100),
+          Image.asset('lib/assets/Images/Cadiz.jpeg', width: 100, height: 100),
         ],
       ),
     );
