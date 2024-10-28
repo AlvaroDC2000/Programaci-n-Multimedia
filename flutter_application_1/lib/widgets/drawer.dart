@@ -104,7 +104,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-                title: const Text('Filas y Columnas Anidadas'), // Nueva entrada
+                title: const Text('Filas y Columnas Anidadas'),
                 onTap: () {
                   Navigator.push(
                     context,
