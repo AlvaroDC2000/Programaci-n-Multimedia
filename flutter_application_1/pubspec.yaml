@@ -23,6 +23,17 @@ flutter:
 
   # Aquí se añaden los assets, incluyendo la ruta de la imagen
   assets:
-    - lib/assets/Images/Malaga.jpg
-    - lib/assets/Images/Cadiz.jpeg
-    - lib/assets/Images/Granada.webp
+    - assets/Images/Malaga.jpg
+    - assets/Images/Cadiz.jpeg
+    - assets/Images/Granada.webp
+    - assets/Images/perfil.jpg
+    - assets/Images/Cordoba.webp
+    - assets/Images/Sevilla.webp
+    - assets/Images/Almeria.jpg
+    - assets/Images/Huelva.jpg
+    - assets/Images/Estepona.jpg
+    - assets/Images/Jaen.jpeg
+    - assets/Images/telefono.jpg
+    - assets/Images/whatsapp.png
+    - assets/Images/instagram.webp
+    - assets/Images/mensaje.webp
