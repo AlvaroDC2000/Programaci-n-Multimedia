@@ -69,6 +69,12 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/nested_rows_columns');
             },
           ),
+          ListTile(
+          title: const Text('Juego de Imágenes'),
+          onTap: () {
+          Navigator.pushNamed(context, '/game_screen');
+          },
+        ),
         ],
       ),
     );
