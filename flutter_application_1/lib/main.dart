@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/app_routes.dart';
+import 'routes/app_routes.dart';
 
 void main() => runApp(const MyApp());
 
@@ -11,18 +11,16 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  // Variable para controlar el modo claro/oscuro
   bool isDarkMode = false;
 
-  void toggleTheme(bool value) {
+  void toggleTheme() {
     setState(() {
-      isDarkMode = value;
+      isDarkMode = !isDarkMode;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Instancia de AppRoutes pasando los valores necesarios
     final appRoutes = AppRoutes(isDarkMode: isDarkMode, toggleTheme: toggleTheme);
 
     return MaterialApp(
@@ -44,15 +42,13 @@ class MyAppState extends State<MyApp> {
         primaryColor: Colors.teal,
         scaffoldBackgroundColor: Colors.black,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromARGB(255, 242, 244, 244),
-          foregroundColor: Color.fromARGB(255, 180, 213, 95),
-          iconTheme: IconThemeData(color: Colors.black),
+          backgroundColor: Colors.teal,
+          foregroundColor: Colors.yellow, // Ajustamos el color de ícono para visibilidad en tema oscuro
+          iconTheme: IconThemeData(color: Colors.yellow), // Color de ícono en tema oscuro
         ),
       ),
       initialRoute: AppRoutes.home,
-      // Usamos la instancia de appRoutes para acceder a getRoutes()
       routes: appRoutes.getRoutes(),
     );
   }
 }
-

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'screens.dart';
+import '../screens/screens.dart';
 
 class AppRoutes {
   final bool isDarkMode;
-  final ValueChanged<bool> toggleTheme;
+  final VoidCallback toggleTheme;
 
-  // Constructor para aceptar isDarkMode y toggleTheme
   AppRoutes({required this.isDarkMode, required this.toggleTheme});
 
   static const String home = '/';
