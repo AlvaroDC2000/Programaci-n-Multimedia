@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'screens.dart';
 
 class AppRoutes {
+  final bool isDarkMode;
+  final ValueChanged<bool> toggleTheme;
+
+  // Constructor para aceptar isDarkMode y toggleTheme
+  AppRoutes({required this.isDarkMode, required this.toggleTheme});
+
   static const String home = '/';
   static const String personalInfo = '/personal_info';
   static const String rowImages = '/row_images';
@@ -14,9 +20,12 @@ class AppRoutes {
   static const String nestedRowsColumns = '/nested_rows_columns';
   static const String game = '/game_screen';
 
-  static Map<String, WidgetBuilder> getRoutes() {
+  Map<String, WidgetBuilder> getRoutes() {
     return {
-      home: (context) => const HomeScreen(),
+      AppRoutes.home: (context) => HomeScreen(
+        isDarkMode: isDarkMode,
+        toggleTheme: toggleTheme,
+      ),
       personalInfo: (context) => const PersonalInfoScreen(),
       rowImages: (context) => const RowImagesScreen(),
       columnImages: (context) => const ColumnImagesScreen(),
