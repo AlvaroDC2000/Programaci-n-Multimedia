@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'base_screen.dart';
 
 class ColumnImagesScreen extends StatelessWidget {
   const ColumnImagesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Imágenes en Columna'),
-      ),
+    return BaseScreen(
+      title: 'Imágenes en Columna',
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'base_screen.dart';
 
 class RowImagesScreen extends StatelessWidget {
   const RowImagesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Imágenes en Fila'),
-      ),
+    return BaseScreen(
+      title: 'Imágenes en Fila',
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

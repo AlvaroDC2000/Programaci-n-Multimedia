@@ -16,7 +16,7 @@ class EditProfileButton extends StatelessWidget {
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.zero, // Hace el botón rectangular
             ),
-            foregroundColor: Colors.black,
+            foregroundColor: const Color.fromARGB(255, 92, 92, 92),
           ),
           child: Text(
             'Editar Perfil',

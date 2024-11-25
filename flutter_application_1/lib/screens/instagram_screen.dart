@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'base_screen.dart';
 import 'profile_section.dart';
 import 'biography_section.dart';
 import 'edit_profile_button.dart';
@@ -14,28 +14,8 @@ class InstagramScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2, // Número de pestañas
-      child: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                'alvaroD00',
-                style: GoogleFonts.lato(
-                  textStyle: const TextStyle(color: Colors.black),
-                ),
-              ),
-              const SizedBox(width: 4),
-              const Icon(Icons.keyboard_arrow_down, color: Colors.black),
-            ],
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          actions: const [
-            Icon(Icons.menu, color: Colors.black),
-            SizedBox(width: 16),
-          ],
-        ),
+      child: BaseScreen(
+        title: 'alvaroD00',
         body: Column(
           children: [
             Expanded(

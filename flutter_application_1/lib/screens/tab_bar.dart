@@ -7,7 +7,7 @@ class TabBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const TabBar(
       indicatorColor: Colors.black,
-      labelColor: Colors.black,
+      labelColor: Color.fromARGB(255, 88, 88, 88),
       unselectedLabelColor: Colors.grey,
       tabs: [
         Tab(icon: Icon(Icons.grid_on)),

@@ -16,6 +16,12 @@ class AppDrawer extends StatelessWidget {
             child: Text('Menú de navegación'),
           ),
           ListTile(
+            title: const Text('Página de Inicio'),
+            onTap: () {
+              Navigator.pushNamed(context, '/');
+            },
+          ),
+          ListTile(
             title: const Text('Página de Información Personal'),
             onTap: () {
               Navigator.pushNamed(context, '/personal_info');

@@ -43,8 +43,8 @@ class MyAppState extends State<MyApp> {
         scaffoldBackgroundColor: Colors.black,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.teal,
-          foregroundColor: Colors.yellow, // Ajustamos el color de ícono para visibilidad en tema oscuro
-          iconTheme: IconThemeData(color: Colors.yellow), // Color de ícono en tema oscuro
+          foregroundColor: Colors.yellow,
+          iconTheme: IconThemeData(color: Colors.yellow),
         ),
       ),
       initialRoute: AppRoutes.home,

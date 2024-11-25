@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'base_screen.dart';
 
 class IconsScreen extends StatelessWidget {
   const IconsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mostrar iconos'),
-      ),
-      body: const Row(
+    return const BaseScreen(
+      title: 'Mostrar Iconos',
+      body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Icon(Icons.home, size: 50, color: Colors.blue),
@@ -22,3 +21,4 @@ class IconsScreen extends StatelessWidget {
     );
   }
 }
+

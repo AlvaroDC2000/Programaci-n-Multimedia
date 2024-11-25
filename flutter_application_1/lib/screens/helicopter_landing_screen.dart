@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'base_screen.dart';
 
 class HelicopterLandingScreen extends StatelessWidget {
   const HelicopterLandingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Zona de Aterrizaje para Helicópteros'),
-      ),
+    return BaseScreen(
+      title: 'Zona de Aterrizaje para Helicópteros',
       body: Align(
         alignment: Alignment.topCenter,
         child: Container(

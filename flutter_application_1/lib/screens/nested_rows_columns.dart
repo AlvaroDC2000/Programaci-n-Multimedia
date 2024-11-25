@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'base_screen.dart';
 
 class NestedRowsColumnsScreen extends StatelessWidget {
   const NestedRowsColumnsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ejemplo de filas y columnas anidadas'),
-      ),
+    return BaseScreen(
+      title: 'Filas y Columnas Anidadas',
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(

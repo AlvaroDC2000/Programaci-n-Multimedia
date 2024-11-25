@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'base_screen.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -93,10 +94,8 @@ class _GameScreenState extends State<GameScreen> {
     final centerX = (MediaQuery.of(context).size.width - squareSize) / 2;
     const double topOffset = 150.0; // Espacio reservado para el marcador
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Juego de Imágenes'),
-      ),
+    return BaseScreen(
+      title: 'Juego de Imágenes',
       body: Stack(
         children: [
           Positioned.fill(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'base_screen.dart';  // Importar BaseScreen
 
 class CounterScreen extends StatefulWidget {
   const CounterScreen({super.key});
@@ -30,33 +31,41 @@ class _CounterScreenState extends State<CounterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Center(child: Text("Álvaro Díaz Casaño"))),
+    return BaseScreen(
+      title: 'Contador',
       body: Center(
-        child: Text(
-          "Has pulsado $numeroVeces veces",
-          style: const TextStyle(fontSize: 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Has pulsado $numeroVeces veces",
+              style: const TextStyle(fontSize: 30),
+            ),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FloatingActionButton(
+                  onPressed: decrementar,
+                  heroTag: "btnDecrementar", // Tag único para este botón
+                  child: const Icon(Icons.remove),
+                ),
+                const SizedBox(width: 20),
+                FloatingActionButton(
+                  onPressed: resetear,
+                  heroTag: "btnResetear", // Tag único para este botón
+                  child: const Icon(Icons.refresh),
+                ),
+                const SizedBox(width: 20),
+                FloatingActionButton(
+                  onPressed: incrementar,
+                  heroTag: "btnIncrementar", // Tag único para este botón
+                  child: const Icon(Icons.add),
+                ),
+              ],
+            ),
+          ],
         ),
-      ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FloatingActionButton(
-            onPressed: decrementar,
-            heroTag: "btnDecrementar", // Tag único para este botón
-            child: const Icon(Icons.remove),
-          ),
-          FloatingActionButton(
-            onPressed: resetear,
-            heroTag: "btnResetear", // Tag único para este botón
-            child: const Icon(Icons.refresh),
-          ),
-          FloatingActionButton(
-            onPressed: incrementar,
-            heroTag: "btnIncrementar", // Tag único para este botón
-            child: const Icon(Icons.add),
-          ),
-        ],
       ),
     );
   }
