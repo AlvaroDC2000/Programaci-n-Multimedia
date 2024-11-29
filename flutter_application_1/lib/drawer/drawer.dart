@@ -76,15 +76,19 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-          title: const Text('Juego de Imágenes'),
-          onTap: () {
-          Navigator.pushNamed(context, '/game_screen');
-          },
-        ),
+            title: const Text('Juego de Imágenes'),
+            onTap: () {
+              Navigator.pushNamed(context, '/game_screen');
+            },
+          ),
+          ListTile(
+            title: const Text('Juego de Siete y Media'),
+            onTap: () {
+              Navigator.pushNamed(context, '/siete_y_media');
+            },
+          ),
         ],
       ),
     );
   }
 }
-
-

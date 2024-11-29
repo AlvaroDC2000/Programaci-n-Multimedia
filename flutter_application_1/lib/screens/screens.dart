@@ -9,4 +9,4 @@ export 'counter_screen.dart';
 export 'instagram_screen.dart';
 export 'nested_rows_columns.dart';
 export 'game_screen.dart';
-
+export 'siete_y_media.dart';

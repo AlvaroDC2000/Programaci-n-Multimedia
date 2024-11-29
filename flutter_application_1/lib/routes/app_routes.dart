@@ -18,6 +18,7 @@ class AppRoutes {
   static const String instagram = '/instagram';
   static const String nestedRowsColumns = '/nested_rows_columns';
   static const String game = '/game_screen';
+  static const String sieteYMedia = '/siete_y_media';
 
   Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -35,6 +36,7 @@ class AppRoutes {
       instagram: (context) => const InstagramScreen(),
       nestedRowsColumns: (context) => const NestedRowsColumnsScreen(),
       game: (context) => const GameScreen(),
+      sieteYMedia: (context) => const SieteYMediaScreen(),
     };
   }
 }
