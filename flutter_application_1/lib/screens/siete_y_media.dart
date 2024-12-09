@@ -338,4 +338,4 @@ class SieteYMediaScreenState extends State<SieteYMediaScreen> {
       cartasMaquina.clear();
     });
   }
-}
+} 

@@ -19,6 +19,10 @@ class AppRoutes {
   static const String nestedRowsColumns = '/nested_rows_columns';
   static const String game = '/game_screen';
   static const String sieteYMedia = '/siete_y_media';
+  static const String formSelection = '/form_selection';
+  static const String formulario1 = '/formulario1';
+  static const String formulario2 = '/formulario2';
+  static const String formulario3 = '/formulario3';
 
   Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -37,6 +41,10 @@ class AppRoutes {
       nestedRowsColumns: (context) => const NestedRowsColumnsScreen(),
       game: (context) => const GameScreen(),
       sieteYMedia: (context) => const SieteYMediaScreen(),
+      formSelection: (context) => const FormSelectionScreen(),
+      formulario1: (context) => Formulario1Screen(),
+      formulario2: (context) =>  const Formulario2Screen(),
+      formulario3: (context) =>  const Formulario3Screen(),
     };
   }
 }

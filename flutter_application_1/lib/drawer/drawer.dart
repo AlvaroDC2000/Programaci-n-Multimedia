@@ -87,6 +87,12 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/siete_y_media');
             },
           ),
+          ListTile(
+            title: const Text('Formularios'),
+            onTap: () {
+              Navigator.pushNamed(context, '/form_selection');
+            },
+          ),
         ],
       ),
     );

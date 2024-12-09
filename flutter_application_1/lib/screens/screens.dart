@@ -10,3 +10,7 @@ export 'instagram_screen.dart';
 export 'nested_rows_columns.dart';
 export 'game_screen.dart';
 export 'siete_y_media.dart';
+export 'form_selection_screen.dart';
+export 'formulario1.dart';
+export 'formulario2.dart';
+export 'formulario3.dart';
