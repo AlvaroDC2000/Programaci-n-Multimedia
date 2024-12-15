@@ -5,6 +5,7 @@ class Formulario4Screen extends StatefulWidget {
   const Formulario4Screen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _Formulario4ScreenState createState() => _Formulario4ScreenState();
 }
 
