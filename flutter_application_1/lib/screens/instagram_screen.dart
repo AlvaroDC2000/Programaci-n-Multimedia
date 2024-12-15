@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'base_screen.dart';
-import 'profile_section.dart';
-import 'biography_section.dart';
-import 'edit_profile_button.dart';
-import 'highlights_section.dart';
-import 'tab_bar.dart';
-import 'tab_bar_view.dart';
+import 'instagram/profile_section.dart';
+import 'instagram/biography_section.dart';
+import 'instagram/edit_profile_button.dart';
+import 'instagram/highlights_section.dart';
+import 'instagram/tab_bar.dart';
+import 'instagram/tab_bar_view.dart';
 
 class InstagramScreen extends StatelessWidget {
   const InstagramScreen({super.key});

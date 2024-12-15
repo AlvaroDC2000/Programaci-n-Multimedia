@@ -30,6 +30,12 @@ class FormSelectionScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/formulario3'); 
             },
           ),
+          ListTile(
+            title: const Text('Formulario 4'),
+            onTap: () {
+              Navigator.pushNamed(context, '/formulario4'); 
+            },
+          ),
         ],
       ),
     );

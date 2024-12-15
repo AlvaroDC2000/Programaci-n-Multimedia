@@ -14,3 +14,4 @@ export 'form_selection_screen.dart';
 export 'formularios/formulario1.dart';
 export 'formularios/formulario2.dart';
 export 'formularios/formulario3.dart';
+export 'formularios/formulario4.dart';
