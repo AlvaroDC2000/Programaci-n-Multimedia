@@ -23,7 +23,6 @@ class AppRoutes {
   static const String formulario1 = '/formulario1';
   static const String formulario2 = '/formulario2';
   static const String formulario3 = '/formulario3';
-  static const String formulario4 = '/formulario4';
 
   Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -46,7 +45,6 @@ class AppRoutes {
       formulario1: (context) => Formulario1Screen(),
       formulario2: (context) =>  const Formulario2Screen(),
       formulario3: (context) =>  const Formulario3Screen(),
-      formulario4: (context) =>  const Formulario4Screen(),
     };
   }
 }
