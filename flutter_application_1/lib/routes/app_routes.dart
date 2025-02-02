@@ -42,7 +42,7 @@ class AppRoutes {
       game: (context) => const GameScreen(),
       sieteYMedia: (context) => const SieteYMediaScreen(),
       formSelection: (context) => const FormSelectionScreen(),
-      formulario1: (context) => Formulario1Screen(),
+      formulario1: (context) => const Formulario1Screen(),
       formulario2: (context) =>  const Formulario2Screen(),
       formulario3: (context) =>  const Formulario3Screen(),
     };
