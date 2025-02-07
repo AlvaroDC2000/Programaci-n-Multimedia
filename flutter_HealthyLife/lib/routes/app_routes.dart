@@ -14,7 +14,9 @@ class AppRoutes {
     required this.onFontSizeChanged, required void Function(String newFontFamily) onFontStyleChanged,
   });
 
-  static const String home = '/';
+  static const String login = '/login';
+  static const String register = '/register';
+  static const String home = '/home';
   static const String hydration = '/hydration';
   static const String exercise = '/exercise';
   static const String sleep = '/sleep';
@@ -23,7 +25,9 @@ class AppRoutes {
 
   Map<String, WidgetBuilder> getRoutes() {
     return {
-      AppRoutes.home: (context) => HomeScreen(
+      login: (context) => const LoginScreen(),
+      register: (context) => const RegisterScreen(),
+      home: (context) => HomeScreen(
         isDarkMode: isDarkMode,
         toggleTheme: toggleTheme,
       ),

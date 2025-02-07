@@ -2,13 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'routes/app_routes.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importación de Firestore
+import 'firebase/firebase_options.dart';
 
-void main() => runApp(
-      ChangeNotifierProvider(
-        create: (_) => AppSettings(),
-        child: const MyApp(),
-      ),
-    );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, // Configuración correcta de Firebase
+  );
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => AppSettings(),
+      child: const MyApp(),
+    ),
+  );
+}
+
+// Instancia global de Firestore
+final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -77,7 +90,7 @@ class MyApp extends StatelessWidget {
           titleLarge: GoogleFonts.getFont(appSettings.fontFamily, fontSize: 20, fontWeight: FontWeight.bold, color: Colors.orange),
         ),
       ),
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.login,
       routes: appRoutes.getRoutes(),
     );
   }
