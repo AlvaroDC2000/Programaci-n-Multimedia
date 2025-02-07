@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Clase donde registramos nuestro usuario (email y contraseña)
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -17,6 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+// Registro
   void register() async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
@@ -52,15 +54,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const Text(
                 'Crea una cuenta',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  labelText: 'Nombre Completo',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                  prefixIcon: const Icon(Icons.person),
-                ),
               ),
               const SizedBox(height: 15),
               TextField(

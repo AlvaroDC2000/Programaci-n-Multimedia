@@ -6,6 +6,7 @@ import '../drawer/drawer.dart';
 import '../main.dart';
 import 'package:intl/intl.dart';
 
+// Clase de pantalla ejercicio, en ella se introducen los pasos y distintos ejercicios que hagamos, y se guandan sus registros
 class ExerciseScreen extends StatefulWidget {
   const ExerciseScreen({super.key});
 
@@ -28,6 +29,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     _checkAndResetSteps();
   }
 
+// Revisa y y resetea los pasos
   void _checkAndResetSteps() async {
   try {
     DocumentSnapshot snapshot =
@@ -74,6 +76,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
   }
 }
 
+// Introduce los pasos manualmente
 void _enterStepsManually() async {
   showDialog(
     context: context,
@@ -122,6 +125,7 @@ void _enterStepsManually() async {
   );
 }
 
+// Añade sesiones de ejercicios
 void _addExerciseSession() async {
   if (_exerciseTypeController.text.isEmpty || _exerciseDurationController.text.isEmpty) return;
 

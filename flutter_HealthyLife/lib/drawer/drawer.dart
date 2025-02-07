@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Clase del drawer
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
@@ -21,6 +22,7 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
+          //Pantalla inicial
           ListTile(
             leading: const Icon(Icons.home),
             title: const Text('Inicio'),
@@ -28,6 +30,7 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/home');
             },
           ),
+          //Pantalla hidratación
           ListTile(
             leading: const Icon(Icons.water_drop),
             title: const Text('Hidratación'),
@@ -35,6 +38,7 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/hydration');
             },
           ),
+          // Pantalla ejercicio
           ListTile(
             leading: const Icon(Icons.fitness_center),
             title: const Text('Ejercicio'),
@@ -42,6 +46,7 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/exercise');
             },
           ),
+          //Pantalla sueño
           ListTile(
             leading: const Icon(Icons.bedtime),
             title: const Text('Sueño'),
@@ -49,6 +54,7 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/sleep');
             },
           ),
+          //Pantalla dieta
           ListTile(
             leading: const Icon(Icons.restaurant_menu),
             title: const Text('Dietas'),
@@ -56,11 +62,20 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/diet');
             },
           ),
+          //Pantalla Configuración
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Configuración'),
             onTap: () {
               Navigator.pushNamed(context, '/settings');
+            },
+          ),
+          //Pantalla perfil
+          ListTile(
+            leading: const Icon(Icons.account_circle),
+            title: const Text('Perfil'),
+            onTap: () {
+              Navigator.pushNamed(context, '/profile');
             },
           ),
         ],

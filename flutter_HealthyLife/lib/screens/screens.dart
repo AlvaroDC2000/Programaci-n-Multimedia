@@ -6,3 +6,6 @@ export 'sleep_screen.dart';
 export 'settings_screen.dart';
 export 'login_screen.dart';
 export 'register_screen.dart';
+export 'profile_screen.dart';
+
+// Aquí están las exportaciones

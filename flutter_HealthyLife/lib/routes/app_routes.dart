@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../screens/screens.dart';
 
+// Clase para las rutas de la app
 class AppRoutes {
   final bool isDarkMode;
   final VoidCallback toggleTheme;
@@ -22,6 +23,7 @@ class AppRoutes {
   static const String sleep = '/sleep';
   static const String diet = '/diet';
   static const String settings = '/settings';
+  static const String profile = '/profile';
 
   Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -42,6 +44,7 @@ class AppRoutes {
         // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
         onFontSizeChanged: onFontSizeChanged, onFontStyleChanged: (String ) {  },
       ),
+      profile: (context) => const ProfileScreen(),
     };
   }
 }

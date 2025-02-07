@@ -23,6 +23,7 @@ void main() async {
 // Instancia global de Firestore
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+// Clase del main
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -96,6 +97,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// Configuración de ajustes
 class AppSettings extends ChangeNotifier {
   bool _isDarkMode = false;
   double _fontSize = 16.0;

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 
+// Clase de la pantalla de configuración, sirve para el tema, y tipo y tamaño de letra
 class SettingsScreen extends StatefulWidget {
   // ignore: non_constant_identifier_names
   const SettingsScreen({super.key, required bool isDarkMode, required VoidCallback toggleTheme, required double fontSize, required void Function(double p1) onFontSizeChanged, required Null Function(dynamic String) onFontStyleChanged});
@@ -30,7 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _loadSettings(); // Cargar configuración desde Firestore
   }
 
-  /// **Cargar configuración desde Firestore**
+  /// Cargar configuración desde Firestore
   void _loadSettings() async {
     try {
       DocumentSnapshot snapshot =
@@ -61,7 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  /// **Guardar configuración en Firestore**
+  /// Guardar configuración en Firestore
   void _saveSettings() async {
     try {
       await _firestore.collection('settings').doc('user_settings').set({
@@ -85,6 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+// Reinicia la configuración
   void _resetSettings() {
     setState(() {
       _currentFontSize = 16.0;
@@ -113,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// **Tema**
+              /// Tema
               const Text(
                 'Tema',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -130,7 +132,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 20),
 
-              /// **Tamaño de letra**
+              /// Tamaño de letra
               const Text(
                 'Tamaño de letra',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -154,7 +156,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 20),
 
-              /// **Estilo de letra**
+              /// Estilo de letra
               const Text(
                 'Estilo de letra',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -182,7 +184,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 20),
 
-              /// **Botón de Restablecer**
+              /// Botón de Restablecer
               ElevatedButton(
                 onPressed: _resetSettings,
                 style: ElevatedButton.styleFrom(
@@ -192,7 +194,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 20),
 
-              /// **Botón de Guardado**
+              /// Botón de Guardado
               Center(
                 child: ElevatedButton(
                   onPressed: _saveSettings,

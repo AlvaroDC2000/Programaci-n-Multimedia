@@ -7,6 +7,7 @@ import '../drawer/drawer.dart';
 import '../main.dart';
 import 'dart:math';
 
+// Clase de la pantalla principal, en ella podremos ver el resumen diario, los progresos semanales, obtendremos consejos y nos propone retos
 class HomeScreen extends StatefulWidget {
   final bool isDarkMode;
   final VoidCallback toggleTheme;
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _fetchWeeklySleep();
   }
 
-  /// **Carga la configuración desde Firestore**
+  /// Carga la configuración desde Firestore
   void _loadSettings() async {
     try {
       DocumentSnapshot snapshot =
@@ -81,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// **Obtiene datos diarios de Firestore**
+  /// Obtiene datos diarios de Firestore
   void _fetchDailyData() async {
     try {
       DocumentSnapshot stepSnapshot = await _firestore
@@ -125,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// **Obtiene los pasos semanales desde Firestore**
+  /// Obtiene los pasos semanales desde Firestore
   void _fetchWeeklySteps() async {
     try {
       QuerySnapshot stepSnapshot = await _firestore
@@ -158,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// **Obtiene las horas de sueño semanales desde Firestore**
+  /// Obtiene las horas de sueño semanales desde Firestore
   void _fetchWeeklySleep() async {
     try {
       QuerySnapshot stepSnapshot = await _firestore
@@ -256,7 +257,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 10),
             ...weeklyChallenges.map((challenge) => ListTile(
-                  leading: const Icon(Icons.check_circle, color: Colors.green),
                   title: Text(challenge),
                 )),
           ],
@@ -288,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// **Gráfico de pasos semanales**
+  /// Gráfico de pasos semanales
   Widget _buildStepProgressChart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -366,6 +366,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+// Grafico de progreso de sueño semanal
   Widget _buildSleepProgressChart(dynamic weeklySleepHours) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

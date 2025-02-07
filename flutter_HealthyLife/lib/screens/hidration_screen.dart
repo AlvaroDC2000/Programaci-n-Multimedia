@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../drawer/drawer.dart';
 
+// Clase de la pantalla hidratación en ella guardamos los vasos de agua que bebemos al día y llevamos un registro
 class HydrationScreen extends StatefulWidget {
   const HydrationScreen({super.key});
 
@@ -39,7 +38,7 @@ class _HydrationScreenState extends State<HydrationScreen> {
     _generateHydrationTip();
   }
 
-  /// **Generar un consejo de hidratación aleatorio**
+  /// Generar un consejo de hidratación aleatorio
   void _generateHydrationTip() {
     final random = Random();
     setState(() {
@@ -47,7 +46,7 @@ class _HydrationScreenState extends State<HydrationScreen> {
     });
   }
 
-  /// **Cargar datos del día desde Firestore**
+  /// Cargar datos del día desde Firestore
   void _loadHydrationData() async {
     String todayDate = "${today.year}-${today.month}-${today.day}";
 
@@ -64,6 +63,7 @@ class _HydrationScreenState extends State<HydrationScreen> {
       if (kDebugMode) {
         print("Error al cargar datos de hidratación: $e");
       }
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Error al obtener los datos de hidratación")),
       );
@@ -93,6 +93,7 @@ class _HydrationScreenState extends State<HydrationScreen> {
       if (kDebugMode) {
         print("Error al registrar vaso de agua: $e");
       }
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Error al registrar vaso de agua")),
       );
@@ -114,7 +115,7 @@ class _HydrationScreenState extends State<HydrationScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// **Consejo de Hidratación**
+            /// Consejo de Hidratación
             Card(
               color: Colors.blue[100],
               elevation: 3,
@@ -137,7 +138,7 @@ class _HydrationScreenState extends State<HydrationScreen> {
 
             const SizedBox(height: 20),
 
-            /// **Progreso de Hidratación**
+            /// Progreso de Hidratación
             Card(
               elevation: 3,
               shape: RoundedRectangleBorder(
@@ -175,7 +176,7 @@ class _HydrationScreenState extends State<HydrationScreen> {
 
             const SizedBox(height: 20),
 
-            /// 📌 **Registro de Vasos**
+            /// Registro de Vasos
             Center(
               child: ElevatedButton(
                 onPressed: _addCup,
@@ -190,7 +191,7 @@ class _HydrationScreenState extends State<HydrationScreen> {
 
             const SizedBox(height: 30),
 
-            /// 📌 **Historial de Hidratación**
+            /// Historial de Hidratación
             const Text(
               'Historial de Hidratación:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

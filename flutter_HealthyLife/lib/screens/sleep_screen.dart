@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../drawer/drawer.dart';
 
+// Clase de la pantalla sueño guarda las horas dormidas diarias  y lleva un registra, también da consejos
 class SleepScreen extends StatefulWidget {
   const SleepScreen({super.key});
 
@@ -36,7 +37,7 @@ class _SleepScreenState extends State<SleepScreen> {
     _generateSleepTip();
   }
 
-  /// **Generar un consejo de sueño aleatorio**
+  /// Generar un consejo de sueño aleatorio
   void _generateSleepTip() {
     final random = Random();
     setState(() {
@@ -44,7 +45,7 @@ class _SleepScreenState extends State<SleepScreen> {
     });
   }
 
-  /// **Registrar horas de sueño**
+  /// Registrar horas de sueño
   void _addSleepHours() async {
   if (_hoursController.text.isEmpty) return;
 
@@ -87,7 +88,7 @@ class _SleepScreenState extends State<SleepScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// **Consejo sobre sueño**
+            /// Consejo sobre sueño
             Card(
               color: Colors.purple[100],
               elevation: 3,
@@ -105,7 +106,7 @@ class _SleepScreenState extends State<SleepScreen> {
             ),
             const SizedBox(height: 20),
 
-            /// **Registro de horas de sueño**
+            /// Registro de horas de sueño
             Card(
               elevation: 3,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -145,7 +146,7 @@ class _SleepScreenState extends State<SleepScreen> {
 
             const SizedBox(height: 20),
 
-            /// **Historial de sueño**
+            /// Historial de sueño
             const Text(
               'Historial de Sueño:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -178,39 +179,6 @@ class _SleepScreenState extends State<SleepScreen> {
             ),
 
             const SizedBox(height: 20),
-
-            /// **Consejos para un mejor sueño**
-            const Text(
-              'Consejos para un mejor sueño:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: ListView(
-                children: const [
-                  ListTile(
-                    leading: Icon(Icons.lightbulb, color: Colors.orange),
-                    title: Text('Evita las pantallas 30 minutos antes de dormir.'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.timer, color: Colors.orange),
-                    title: Text('Mantén un horario constante para ir a dormir.'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.fitness_center, color: Colors.orange),
-                    title: Text('Haz ejercicio regularmente, pero evita hacerlo antes de dormir.'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.bedtime, color: Colors.orange),
-                    title: Text('Asegúrate de que tu habitación esté oscura y silenciosa.'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.local_drink, color: Colors.orange),
-                    title: Text('Evita consumir cafeína por la tarde o noche.'),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

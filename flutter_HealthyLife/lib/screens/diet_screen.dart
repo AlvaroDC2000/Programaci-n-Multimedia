@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 import '../drawer/drawer.dart';
 
+// Clase para la pantalla de dietas, utilizaremos la API "edamam"
 class DietScreen extends StatefulWidget {
   const DietScreen({super.key});
 
@@ -16,12 +17,13 @@ class DietScreen extends StatefulWidget {
 
 class _DietScreenState extends State<DietScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  List<Map<String, dynamic>> _diets = [];
-  List<Map<String, dynamic>> _registeredMeals = [];
-  List<Map<String, dynamic>> _favoriteDiets = []; // **Lista de favoritas**
+  List<Map<String, dynamic>> _diets = [];// Lista de dietas
+  List<Map<String, dynamic>> _registeredMeals = []; // Lista de comidas
+  List<Map<String, dynamic>> _favoriteDiets = []; // Lista de dietas favoritas
   String _selectedDietType = "vegetarian";
   bool _isLoading = false;
 
+//Tipos de dietas
   final List<String> _dietTypes = [
     "vegetarian",
     "keto",
@@ -36,10 +38,10 @@ class _DietScreenState extends State<DietScreen> {
     super.initState();
     _fetchDiets();
     _fetchRegisteredMeals();
-    _fetchFavoriteDiets(); // **Cargar favoritas**
+    _fetchFavoriteDiets(); // Cargar favoritas
   }
 
-  /// **Obtener las dietas de la API**
+  /// Obtener las dietas de la API
   Future<void> _fetchDiets() async {
     setState(() {
       _isLoading = true;
@@ -80,7 +82,7 @@ class _DietScreenState extends State<DietScreen> {
     }
   }
 
-  /// **Abrir la URL de la receta**
+  /// Abrir la URL de la receta
   Future<void> _openRecipeUrl(String url) async {
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
@@ -89,7 +91,7 @@ class _DietScreenState extends State<DietScreen> {
     }
   }
 
-  /// **Guardar dieta en favoritos en Firestore**
+  /// Guardar dieta en favoritos en Firestore
   void _saveFavoriteDiet(Map<String, dynamic> diet) async {
     try {
       await _firestore.collection('favorite_diets').add({
@@ -104,7 +106,7 @@ class _DietScreenState extends State<DietScreen> {
         const SnackBar(content: Text("Dieta guardada en favoritos")),
       );
 
-      _fetchFavoriteDiets(); // **Actualizar la lista**
+      _fetchFavoriteDiets(); // Actualizar la lista
     } catch (e) {
       if (kDebugMode) {
         print("Error al guardar dieta: $e");
@@ -112,7 +114,7 @@ class _DietScreenState extends State<DietScreen> {
     }
   }
 
-  /// **Registrar una comida en Firestore**
+  /// Registrar una comida en Firestore
   void _registerMeal(String mealName) async {
     try {
       await _firestore.collection('meals').add({
@@ -125,7 +127,7 @@ class _DietScreenState extends State<DietScreen> {
         const SnackBar(content: Text("Comida registrada correctamente")),
       );
 
-      _fetchRegisteredMeals(); // **Actualizar lista de comidas registradas**
+      _fetchRegisteredMeals(); // Actualizar lista de comidas registradas
     } catch (e) {
       if (kDebugMode) {
         print("Error al registrar comida: $e");
@@ -133,7 +135,7 @@ class _DietScreenState extends State<DietScreen> {
     }
   }
 
-  /// **Obtener comidas registradas de Firestore**
+  /// Obtener comidas registradas de Firestore
   Future<void> _fetchRegisteredMeals() async {
     try {
       QuerySnapshot snapshot = await _firestore
@@ -156,7 +158,7 @@ class _DietScreenState extends State<DietScreen> {
     }
   }
 
-  /// **Obtener dietas favoritas de Firestore**
+  /// Obtener dietas favoritas de Firestore
   Future<void> _fetchFavoriteDiets() async {
     try {
       QuerySnapshot snapshot = await _firestore
