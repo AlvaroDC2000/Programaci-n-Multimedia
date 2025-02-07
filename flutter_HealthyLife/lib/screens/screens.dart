@@ -1,4 +1,4 @@
-export 'home_screen.dart';
+export 'home_screen/home_screen.dart';
 export 'hidration_screen.dart';
 export 'diet_screen.dart';
 export 'exercise_screen.dart';
