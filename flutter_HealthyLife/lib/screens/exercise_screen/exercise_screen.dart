@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../drawer/drawer.dart';
-import '../main.dart';
+import '../../drawer/drawer.dart';
+import '../../main.dart';
 import 'package:intl/intl.dart';
 
 // Clase de pantalla ejercicio, en ella se introducen los pasos y distintos ejercicios que hagamos, y se guandan sus registros

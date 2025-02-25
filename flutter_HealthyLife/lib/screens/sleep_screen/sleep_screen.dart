@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_healthylife/main.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../drawer/drawer.dart';
+import '../../drawer/drawer.dart';
 
 // Clase de la pantalla sueño guarda las horas dormidas diarias  y lleva un registra, también da consejos
 class SleepScreen extends StatefulWidget {

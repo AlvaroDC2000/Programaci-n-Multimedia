@@ -6,7 +6,6 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
@@ -14,20 +13,42 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-// Login
+
+  // Método para iniciar sesión
   void login() async {
     try {
       await _auth.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      // ignore: use_build_context_synchronously
+
+      if (!mounted) return; // Verifica si el widget sigue en pantalla antes de navegar
+
+      // Navegar a la pantalla principal tras inicio de sesión exitoso
       Navigator.pushReplacementNamed(context, '/home');
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = "Error desconocido";
+
+      // Manejo de errores específicos de FirebaseAuth
+      if (e.code == 'user-not-found') {
+        errorMessage = "Usuario no encontrado. Verifique su correo.";
+      } else if (e.code == 'wrong-password') {
+        errorMessage = "Contraseña incorrecta. Inténtelo nuevamente.";
+      } else if (e.code == 'invalid-email') {
+        errorMessage = "El formato del correo electrónico no es válido.";
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
+      }
     } catch (e) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al iniciar sesión: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error al iniciar sesión: $e")),
+        );
+      }
     }
   }
 
@@ -48,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
               TextField(
                 controller: emailController,
+                keyboardType: TextInputType.emailAddress, // Define el teclado adecuado
                 decoration: InputDecoration(
                   labelText: 'Correo Electrónico',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -57,12 +79,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 15),
               TextField(
                 controller: passwordController,
+                obscureText: true, // Ocultar contraseña
                 decoration: InputDecoration(
                   labelText: 'Contraseña',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   prefixIcon: const Icon(Icons.lock),
                 ),
-                obscureText: true,
               ),
               const SizedBox(height: 20),
               ElevatedButton(

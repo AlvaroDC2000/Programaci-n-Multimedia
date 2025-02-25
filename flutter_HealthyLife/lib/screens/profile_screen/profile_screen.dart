@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../routes/app_routes.dart';
+import '../../routes/app_routes.dart';
 
 // Clase de la pantalla perfil, donde podemos cambiar la contraseña y salir de la sesión
 class ProfileScreen extends StatefulWidget {

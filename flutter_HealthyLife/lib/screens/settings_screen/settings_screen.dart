@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../drawer/drawer.dart';
+import '../../drawer/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../main.dart';
+import '../../main.dart';
 
 // Clase de la pantalla de configuración, sirve para el tema, y tipo y tamaño de letra
 class SettingsScreen extends StatefulWidget {

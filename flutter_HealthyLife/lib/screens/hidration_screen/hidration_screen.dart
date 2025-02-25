@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_healthylife/main.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../drawer/drawer.dart';
+import '../../drawer/drawer.dart';
 
 // Clase de la pantalla hidratación en ella guardamos los vasos de agua que bebemos al día y llevamos un registro
 class HydrationScreen extends StatefulWidget {
