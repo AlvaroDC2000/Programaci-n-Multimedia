@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "474601209451",
+    "project_id": "flutter-listaya",
+    "storage_bucket": "flutter-listaya.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474601209451:android:ddae5cafe2a8af44183b2e",
+        "android_client_info": {
+          "package_name": "AndroidManifest.xml"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ9AY-gK4GaE9IQHGhPDZXP5hL9VOJZ_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474601209451:android:bd74f999c6f28130183b2e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ9AY-gK4GaE9IQHGhPDZXP5hL9VOJZ_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
