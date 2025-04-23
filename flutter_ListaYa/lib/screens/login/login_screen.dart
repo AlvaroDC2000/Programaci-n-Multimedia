@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../routes/app_routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:googleapis_auth/auth_io.dart';
+import 'package:http/http.dart' as http;
+
+import '../../providers/auth_client_provider.dart';
+import '../../routes/app_routes.dart';
+import '../../main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -19,59 +25,60 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool rememberMe = false;
 
-//Guardado login
   Future<void> login() async {
-  try {
-    await _auth.signInWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
 
-    if (rememberMe) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('keep_logged_in', true);
+      if (rememberMe) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('keep_logged_in', true);
+      }
+
+      // ignore: use_build_context_synchronously
+      final appSettings = Provider.of<AppSettings>(context, listen: false);
+      await loadUserSettings(appSettings);
+
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacementNamed(context, AppRoutes.lists);
+    } on FirebaseAuthException catch (e) {
+      String message;
+      switch (e.code) {
+        case 'user-not-found':
+          message = 'No se encontró ningún usuario con ese correo.';
+          break;
+        case 'wrong-password':
+          message = 'La contraseña es incorrecta.';
+          break;
+        case 'invalid-email':
+          message = 'El correo no es válido.';
+          break;
+        case 'user-disabled':
+          message = 'Este usuario ha sido deshabilitado.';
+          break;
+        default:
+          message = 'Error al iniciar sesión: ${e.message}';
+      }
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error inesperado: $e')),
+      );
     }
-
-    // ignore: use_build_context_synchronously
-    Navigator.pushReplacementNamed(context, AppRoutes.lists);
-  } on FirebaseAuthException catch (e) {
-    String message;
-
-// Mensajes de error
-    switch (e.code) {
-      case 'user-not-found':
-        message = 'No se encontró ningún usuario con ese correo.';
-        break;
-      case 'wrong-password':
-        message = 'La contraseña es incorrecta.';
-        break;
-      case 'invalid-email':
-        message = 'El correo no es válido.';
-        break;
-      case 'user-disabled':
-        message = 'Este usuario ha sido deshabilitado.';
-        break;
-      default:
-        message = 'Error al iniciar sesión: ${e.message}';
-    }
-
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  } catch (e) {
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error inesperado: $e')),
-    );
   }
-}
 
-
-//Login con google
   Future<void> loginWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await GoogleSignIn(
+        scopes: ['https://www.googleapis.com/auth/tasks'],
+      ).signIn();
+
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
 
@@ -96,6 +103,34 @@ class _LoginScreenState extends State<LoginScreen> {
           });
         }
 
+        // Guardar preferencia si desea mantener sesión
+        if (rememberMe) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('keep_logged_in', true);
+        }
+
+        // Cargar configuración del usuario desde Firestore
+        // ignore: use_build_context_synchronously
+        final appSettings = Provider.of<AppSettings>(context, listen: false);
+        await loadUserSettings(appSettings);
+
+        // Crear authClient para Google Tasks API
+        final authClient = authenticatedClient(
+          http.Client(),
+          AccessCredentials(
+            AccessToken(
+              'Bearer',
+              googleAuth!.accessToken!,
+              DateTime.now().add(const Duration(hours: 1)),
+            ),
+            null,
+            ['https://www.googleapis.com/auth/tasks'],
+          ),
+        );
+
+        // ignore: use_build_context_synchronously
+        Provider.of<AuthClientProvider>(context, listen: false).setAuthClient(authClient);
+
         // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, AppRoutes.lists);
       }
@@ -110,6 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF26C485),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),

@@ -28,9 +28,9 @@ class AppRoutes {
     return {
       login: (context) => const LoginScreen(),
       register: (context) => const RegisterScreen(),
-      lists: (context) => const ListsScreen(
+      lists: (context) => const ListsScreen(authClient: null,
       ),
-      task: (context) => const TaskScreen(),
+      task: (context) => const TaskScreen(authClient: null,),
       settings: (context) => SettingsScreen(
         isDarkMode: isDarkMode,
         toggleTheme: toggleTheme,

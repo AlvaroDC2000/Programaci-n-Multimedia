@@ -59,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (context) => AlertDialog(
         title: const Text('¿Estás seguro?'),
         content: const Text(
-          'Esta acción eliminará tu cuenta y todos tus datos de forma permanente. ¿Deseas continuar?',
+          'Esta acción eliminará tu cuenta permanentemente. ¿Deseas continuar?',
         ),
         actions: [
           TextButton(
@@ -96,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF26C485),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: const AppDrawer(),
       body: SafeArea(
         child: Column(
@@ -138,7 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
 
-            // Contenido
+            // Correos y cambio contraseña
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 24),

@@ -22,7 +22,7 @@ class FinishedScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFF26C485), 
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: const AppDrawer(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

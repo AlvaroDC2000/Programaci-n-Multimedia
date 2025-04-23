@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ class SettingsScreen extends StatefulWidget {
     required bool isDarkMode,
     required VoidCallback toggleTheme,
     required double fontSize,
-    required void Function(double p1) onFontSizeChanged,
+    required void Function(double) onFontSizeChanged,
     required void Function(String) onFontStyleChanged,
   });
 
@@ -22,48 +23,45 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  late double _currentFontSize;
-  late String _currentFontStyle;
-  late bool _isDarkMode;
+  late double _currentFontSize = 16.0;
+  late String _currentFontStyle = 'Roboto';
+  late bool _isDarkMode = false;
 
   @override
   void initState() {
     super.initState();
-    final appSettings = Provider.of<AppSettings>(context, listen: false);
-    _currentFontSize = appSettings.fontSize;
-    _currentFontStyle = appSettings.fontFamily;
-    _isDarkMode = appSettings.isDarkMode;
-    _loadSettings();
+    _loadUserSettings();
   }
 
-  Future<void> _loadSettings() async {
-    try {
-      final snapshot = await _firestore.collection('settings').doc('user_settings').get();
-      if (snapshot.exists) {
-        setState(() {
-          _currentFontSize = (snapshot['fontSize'] ?? 16.0).toDouble();
-          _currentFontStyle = snapshot['fontStyle'] ?? 'Roboto';
-          _isDarkMode = (snapshot['theme'] ?? 'light') == 'dark';
+  Future<void> _loadUserSettings() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
 
-          final appSettings = Provider.of<AppSettings>(context, listen: false);
-          appSettings.setFontSize(_currentFontSize);
-          appSettings.setFontStyle(_currentFontStyle);
-          if (_isDarkMode != appSettings.isDarkMode) {
-            appSettings.toggleTheme();
-          }
-        });
-      }
-    } catch (e) {
+    final doc = await _firestore.collection('settings').doc(user.uid).get();
+    if (doc.exists) {
+      final data = doc.data()!;
+      setState(() {
+        _currentFontSize = (data['fontSize'] ?? 16.0).toDouble();
+        _currentFontStyle = data['fontStyle'] ?? 'Roboto';
+        _isDarkMode = (data['theme'] ?? 'light') == 'dark';
+      });
+
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error al cargar configuración')),
-      );
+      final appSettings = Provider.of<AppSettings>(context, listen: false);
+      appSettings.setFontSize(_currentFontSize);
+      appSettings.setFontStyle(_currentFontStyle);
+      if (_isDarkMode != appSettings.isDarkMode) {
+        appSettings.toggleTheme();
+      }
     }
   }
 
   Future<void> _saveSettings() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
     try {
-      await _firestore.collection('settings').doc('user_settings').set({
+      await _firestore.collection('settings').doc(user.uid).set({
         'theme': _isDarkMode ? 'dark' : 'light',
         'fontSize': _currentFontSize,
         'fontStyle': _currentFontStyle,
@@ -76,7 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } catch (e) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error al guardar configuración')),
+        SnackBar(content: Text('Error al guardar configuración: $e')),
       );
     }
   }
@@ -99,9 +97,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final appSettings = Provider.of<AppSettings>(context);
+    final textColor = Theme.of(context).textTheme.bodyMedium?.color;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF26C485),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: const AppDrawer(),
       body: SafeArea(
         child: Column(
@@ -117,25 +116,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
 
-            // Drawer botón
+            // Botón Drawer
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Builder(
                 builder: (context) => IconButton(
-                  icon: const Icon(Icons.menu, color: Colors.white, size: 30),
+                  icon: Icon(Icons.menu, color: textColor, size: 30),
                   onPressed: () => Scaffold.of(context).openDrawer(),
                 ),
               ),
             ),
 
             // Título
-            const Center(
+            Center(
               child: Padding(
-                padding: EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.only(bottom: 12),
                 child: Text(
                   'Configuración',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
@@ -150,10 +149,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Tema',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                    Text('Tema',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: textColor)),
                     SwitchListTile(
-                      title: Text(_isDarkMode ? 'Modo Oscuro' : 'Modo Claro'),
+                      title: Text(_isDarkMode ? 'Modo Oscuro' : 'Modo Claro',
+                          style: TextStyle(color: textColor)),
                       value: _isDarkMode,
                       onChanged: (value) {
                         setState(() => _isDarkMode = value);
@@ -161,8 +164,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    const Text('Tamaño de letra',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                    Text('Tamaño de letra',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: textColor)),
                     Slider(
                       value: _currentFontSize,
                       min: 12.0,
@@ -177,10 +183,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const SizedBox(height: 10),
                     Text('Vista previa del texto',
                         style: GoogleFonts.getFont(_currentFontStyle,
-                            fontSize: _currentFontSize, color: Colors.white)),
+                            fontSize: _currentFontSize, color: textColor)),
                     const SizedBox(height: 20),
-                    const Text('Estilo de letra',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                    Text('Estilo de letra',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: textColor)),
                     DropdownButton<String>(
                       value: _currentFontStyle,
                       isExpanded: true,
@@ -221,7 +230,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           icon: const Icon(Icons.save),
                           label: const Text('Guardar'),
                           style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 12),
                           ),
                         ),
                       ],
