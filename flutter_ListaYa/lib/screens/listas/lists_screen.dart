@@ -77,8 +77,100 @@ class _ListsScreenState extends State<ListsScreen> {
     }
   }
 
+  Future<void> completarTarea(Map<String, String> tarea) async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) return;
+
+  final titulo = tarea['titulo'] ?? '';
+  final descripcion = tarea['descripcion'] ?? '';
+
+  final isGoogleUser =
+      user.providerData.any((info) => info.providerId == 'google.com');
+
+  try {
+    if (isGoogleUser) {
+      final authClient =
+          Provider.of<AuthClientProvider>(context, listen: false).authClient;
+      final api = gt.TasksApi(authClient);
+
+      // Buscar la tarea en Google Tasks para obtener el ID
+      final result = await api.tasks.list('@default');
+      final taskToComplete = result.items?.firstWhere(
+        (t) =>
+            (t.title ?? '') == titulo && (t.notes ?? '') == descripcion,
+        orElse: () => gt.Task(),
+      );
+
+      if (taskToComplete != null && taskToComplete.id != null) {
+        final completedTask = gt.Task()
+          ..status = 'completed'
+          ..completed = DateTime.now().toUtc().toIso8601String();
+
+        await api.tasks.patch(completedTask, '@default', taskToComplete.id!);
+      }
+    } else {
+      // Guardar en finished_tasks
+      await FirebaseFirestore.instance.collection('finished_tasks').add({
+        'uid': user.uid,
+        'titulo': titulo,
+        'descripcion': descripcion,
+        'fecha': DateTime.now(),
+      });
+
+      // Eliminar de tasks
+      final snapshot = await FirebaseFirestore.instance
+          .collection('tasks')
+          .where('uid', isEqualTo: user.uid)
+          .where('titulo', isEqualTo: titulo)
+          .where('descripcion', isEqualTo: descripcion)
+          .get();
+
+      for (final doc in snapshot.docs) {
+        await doc.reference.delete();
+      }
+    }
+
+    loadTasks();
+  } catch (e) {
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error al completar tarea: $e')),
+    );
+  }
+}
+
+
+  Future<void> eliminarTarea(Map<String, String> tarea) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final titulo = tarea['titulo'] ?? '';
+    final descripcion = tarea['descripcion'] ?? '';
+
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('tasks')
+          .where('uid', isEqualTo: user.uid)
+          .where('titulo', isEqualTo: titulo)
+          .where('descripcion', isEqualTo: descripcion)
+          .get();
+
+      for (final doc in snapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      loadTasks();
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al eliminar tarea: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final textColor = Theme.of(context).textTheme.bodyMedium?.color;
 
     return Scaffold(
@@ -151,9 +243,18 @@ class _ListsScreenState extends State<ListsScreen> {
                                 ],
                               ),
                               child: ListTile(
-                                leading: const Icon(Icons.check_circle_outline),
+                                leading: IconButton(
+                                  icon: const Icon(Icons.check_circle_outline,
+                                      color: Colors.green),
+                                  onPressed: () => completarTarea(item),
+                                ),
                                 title: Text(item['titulo'] ?? ''),
                                 subtitle: Text(item['descripcion'] ?? ''),
+                                trailing: IconButton(
+                                  icon:
+                                      const Icon(Icons.close, color: Colors.red),
+                                  onPressed: () => eliminarTarea(item),
+                                ),
                               ),
                             );
                           },
@@ -165,3 +266,4 @@ class _ListsScreenState extends State<ListsScreen> {
     );
   }
 }
+
