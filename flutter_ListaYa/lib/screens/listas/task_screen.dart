@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:googleapis/tasks/v1.dart' as gt;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../drawer/drawer.dart';
 import '../../providers/auth_client_provider.dart';
+import '../../../services/google_tasks_service.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key? key, required authClient}) : super(key: key);
@@ -18,26 +19,36 @@ class _TaskScreenState extends State<TaskScreen> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descController = TextEditingController();
   DateTime? selectedDate;
+  GoogleTasksService? googleService;
 
-  final firestore = FirebaseFirestore.instance;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final user = FirebaseAuth.instance.currentUser;
+    final isGoogleUser =
+        user?.providerData.any((info) => info.providerId == 'google.com') ?? false;
+    if (isGoogleUser) {
+      final authClient =
+          Provider.of<AuthClientProvider>(context, listen: false).authClient;
+      googleService = GoogleTasksService(authClient);
+    }
+  }
 
   Future<void> pickDateTime() async {
     final now = DateTime.now();
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: now,
+      initialDate: selectedDate ?? now,
       firstDate: now,
       lastDate: DateTime(now.year + 5),
     );
-
     if (pickedDate == null) return;
 
     final pickedTime = await showTimePicker(
       // ignore: use_build_context_synchronously
       context: context,
-      initialTime: TimeOfDay.fromDateTime(now),
+      initialTime: TimeOfDay.fromDateTime(selectedDate ?? now),
     );
-
     if (pickedTime == null) return;
 
     setState(() {
@@ -51,7 +62,7 @@ class _TaskScreenState extends State<TaskScreen> {
     });
   }
 
-  Future<void> saveTask(dynamic authClient) async {
+  Future<void> saveTask() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
@@ -69,16 +80,15 @@ class _TaskScreenState extends State<TaskScreen> {
         user.providerData.any((info) => info.providerId == 'google.com');
 
     try {
-      if (isGoogleUser && authClient != null) {
-        final tasksApi = gt.TasksApi(authClient);
-        final task = gt.Task()
-          ..title = title
-          ..notes = desc
-          ..due = selectedDate!.toUtc().toIso8601String();
-
-        await tasksApi.tasks.insert(task, '@default');
+      if (isGoogleUser && googleService != null) {
+        await googleService!.crearTarea(
+          taskListId: '@default',
+          titulo: title,
+          notas: desc,
+          fechaHora: selectedDate,
+        );
       } else {
-        await firestore.collection('tasks').add({
+        await FirebaseFirestore.instance.collection('tasks').add({
           'uid': user.uid,
           'titulo': title,
           'descripcion': desc,
@@ -107,8 +117,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authClient = Provider.of<AuthClientProvider>(context).authClient;
-    final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
+    final dateFormat = DateFormat('dd/MM/yyyy – HH:mm');
     final textColor = Theme.of(context).textTheme.bodyMedium?.color;
 
     return Scaffold(
@@ -118,7 +127,6 @@ class _TaskScreenState extends State<TaskScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Logo
             SizedBox(
               height: 180,
               child: Image.asset(
@@ -127,7 +135,6 @@ class _TaskScreenState extends State<TaskScreen> {
                 width: double.infinity,
               ),
             ),
-            // Botón Drawer
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Builder(
@@ -137,7 +144,6 @@ class _TaskScreenState extends State<TaskScreen> {
                 ),
               ),
             ),
-            // Título
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 16),
@@ -151,7 +157,6 @@ class _TaskScreenState extends State<TaskScreen> {
                 ),
               ),
             ),
-            // Formulario
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -184,7 +189,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     ),
                     const SizedBox(height: 30),
                     ElevatedButton(
-                      onPressed: () => saveTask(authClient),
+                      onPressed: saveTask,
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         minimumSize: const Size.fromHeight(50),
@@ -205,3 +210,4 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 }
+

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/main.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../drawer/drawer.dart';
 
@@ -202,17 +204,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
+                        // Dentro de ProfileScreen, en el onPressed del botón “Cerrar sesión”:
                         onPressed: () async {
                           try {
                             final prefs = await SharedPreferences.getInstance();
                             await prefs.setBool('keep_logged_in', false);
+
+                            await prefs.remove('theme');
+                            await prefs.remove('fontSize');
+                            await prefs.remove('fontStyle');
+
+                            final appSettings = Provider.of<AppSettings>(
+                                // ignore: use_build_context_synchronously
+                                context,
+                                listen: false);
+                            appSettings
+                                .reset(); 
 
                             await FirebaseAuth.instance.signOut();
 
                             if (!mounted) return;
                             // ignore: use_build_context_synchronously
                             Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/login', (route) => false);
+                                '/login', (_) => false);
                           } catch (e) {
                             if (mounted) {
                               // ignore: use_build_context_synchronously
@@ -224,6 +238,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             }
                           }
                         },
+
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFC8E6C9),
                           foregroundColor: const Color(0xFF2E7D32),

@@ -72,82 +72,92 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-
-  @override
+   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF26C485),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                height: 180,
-                child: Image.asset(
-                  'assets/Images/ListaYaLogo.png',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'CREAR UN USUARIO',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 30),
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Usuario:',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Contraseña:',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: repeatPasswordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Repite Contraseña:',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: register,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+    final fixedTheme = ThemeData(
+      scaffoldBackgroundColor: const Color(0xFF26C485),
+      primaryColor: const Color(0xFF26C485),
+      textTheme: GoogleFonts.poppinsTextTheme().copyWith(
+        titleLarge: GoogleFonts.poppins(
+          fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+        bodyMedium: const TextStyle(color: Colors.white),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        border: OutlineInputBorder(),
+        labelStyle: TextStyle(color: Colors.white70),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+      ),
+    );
+
+    return Theme(
+      data: fixedTheme,
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: 180,
+                  child: Image.asset(
+                    'assets/Images/ListaYaLogo.png',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
                   ),
                 ),
-                child: const Text('Registrar usuario'),
-              ),
-              const SizedBox(height: 10),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.login);
-                },
-                child: const Text(
-                  '¿Ya tienes cuenta? Inicia sesión',
-                  style: TextStyle(fontSize: 14, color: Colors.white),
+                const SizedBox(height: 20),
+                Text(
+                  'CREAR UN USUARIO',
+                  textAlign: TextAlign.center,
+                  style: fixedTheme.textTheme.titleLarge,
                 ),
-              ),
-            ],
+                const SizedBox(height: 30),
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(labelText: 'Usuario:'),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(labelText: 'Contraseña:'),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: repeatPasswordController,
+                  obscureText: true,
+                  decoration:
+                      const InputDecoration(labelText: 'Repite Contraseña:'),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: register,
+                  child: const Text('Registrar usuario'),
+                ),
+                const SizedBox(height: 10),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                        context, AppRoutes.login);
+                  },
+                  child: const Text(
+                    '¿Ya tienes cuenta? Inicia sesión',
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

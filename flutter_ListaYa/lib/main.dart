@@ -85,6 +85,8 @@ class AppSettings extends ChangeNotifier {
     _fontFamily = newFontFamily;
     notifyListeners();
   }
+
+  void reset() {}
 }
 
 class MyApp extends StatelessWidget {
@@ -159,7 +161,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
         textTheme: TextTheme(
-          bodyMedium: GoogleFonts.getFont(
+          bodyMedium: GoogleFonts.
+          getFont(
             appSettings.fontFamily,
             fontSize: appSettings.fontSize,
             color: Colors.grey[300],

@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
             AccessToken(
               'Bearer',
               googleAuth!.accessToken!,
-              DateTime.now().add(const Duration(hours: 1)),
+              DateTime.now().toUtc().add(const Duration(hours: 1))
             ),
             null,
             ['https://www.googleapis.com/auth/tasks'],
@@ -129,7 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         // ignore: use_build_context_synchronously
-        Provider.of<AuthClientProvider>(context, listen: false).setAuthClient(authClient);
+        Provider.of<AuthClientProvider>(context, listen: false)
+            .setAuthClient(authClient);
 
         // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, AppRoutes.lists);
@@ -144,109 +145,135 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF26C485),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                height: 180,
-                child: Image.asset(
-                  'assets/Images/ListaYaLogo.png',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Iniciar Sesión',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 30),
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Correo electrónico',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Contraseña',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Checkbox(
-                    value: rememberMe,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        rememberMe = value ?? false;
-                      });
-                    },
-                  ),
-                  const Text('Guardar sesión'),
-                ],
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: login,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                ),
-                child: const Text('Iniciar sesión'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () =>
-                    Navigator.pushNamed(context, AppRoutes.register),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                ),
-                child: const Text('Registrar nuevo usuario'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: loginWithGoogle,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black87,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    side: const BorderSide(color: Colors.grey),
+    const primary = Color(0xFF26C485);
+    final fixedTheme = ThemeData(
+      scaffoldBackgroundColor: primary,
+      primaryColor: primary,
+      textTheme: GoogleFonts.poppinsTextTheme().copyWith(
+        titleLarge: GoogleFonts.poppins(
+          fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white),
+        bodyMedium: const TextStyle(color: Colors.white),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        border: OutlineInputBorder(),
+        labelStyle: TextStyle(color: Colors.white70),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.all(Colors.white),
+        checkColor: WidgetStateProperty.all(primary),
+      ),
+    );
+
+    return Theme(
+      data: fixedTheme,
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: 180,
+                  child: Image.asset(
+                    'assets/Images/ListaYaLogo.png',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                const SizedBox(height: 20),
+                Text(
+                  'Iniciar Sesión',
+                  textAlign: TextAlign.center,
+                  style: fixedTheme.textTheme.titleLarge,
+                ),
+                const SizedBox(height: 30),
+                TextField(
+                  controller: emailController,
+                  decoration:
+                      const InputDecoration(labelText: 'Correo electrónico'),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(labelText: 'Contraseña'),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 10),
+                Row(
                   children: [
-                    Image.asset(
-                      'assets/Images/Google.png',
-                      height: 24,
-                      width: 24,
+                    Checkbox(
+                      value: rememberMe,
+                      onChanged: (v) => setState(() => rememberMe = v ?? false),
                     ),
-                    const SizedBox(width: 12),
-                    const Text('Continuar con Google'),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'Guardar sesión',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: login,
+                  child: const Text('Iniciar sesión'),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.register),
+                  child: const Text('Registrar nuevo usuario'),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: loginWithGoogle,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black87,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: const BorderSide(color: Colors.grey),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/Images/Google.png',
+                          height: 24, width: 24),
+                      const SizedBox(width: 12),
+                      const Text('Continuar con Google'),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    emailController.text = 'usuario@gmail.com';
+                    passwordController.text = '123456';
+                    await login();
+                  },
+                  icon: const Icon(Icons.login),
+                  label: const Text('Acceder como usuario de prueba'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orangeAccent,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

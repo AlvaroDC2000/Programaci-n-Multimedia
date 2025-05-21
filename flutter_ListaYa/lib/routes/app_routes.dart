@@ -7,12 +7,14 @@ class AppRoutes {
   final VoidCallback toggleTheme;
   final double fontSize;
   final void Function(double) onFontSizeChanged;
+  final void Function(String newFontFamily) onFontStyleChanged;
 
   AppRoutes({
     required this.isDarkMode,
     required this.toggleTheme,
     required this.fontSize,
-    required this.onFontSizeChanged, required void Function(String newFontFamily) onFontStyleChanged,
+    required this.onFontSizeChanged,
+    required this.onFontStyleChanged,
   });
 
   static const String login = '/login';
@@ -28,19 +30,33 @@ class AppRoutes {
     return {
       login: (context) => const LoginScreen(),
       register: (context) => const RegisterScreen(),
-      lists: (context) => const ListsScreen(authClient: null,
-      ),
-      task: (context) => const TaskScreen(authClient: null,),
+      lists: (context) => const ListsScreen(authClient: null),
+      task: (context) => const TaskScreen(authClient: null),
       settings: (context) => SettingsScreen(
-        isDarkMode: isDarkMode,
-        toggleTheme: toggleTheme,
-        fontSize: fontSize,
-        // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
-        onFontSizeChanged: onFontSizeChanged, onFontStyleChanged: (String ) {  },
-      ),
+            isDarkMode: isDarkMode,
+            toggleTheme: toggleTheme,
+            fontSize: fontSize,
+            onFontSizeChanged: onFontSizeChanged,
+            onFontStyleChanged: onFontStyleChanged,
+          ),
       profile: (context) => const ProfileScreen(),
       finished: (context) => const FinishedScreen(),
-      modify: (context) => const ModifyScreen(initialName: '', initialTasks: [],),
+
+      // NUEVO: modificar para aceptar argumentos de Navigator
+      modify: (context) {
+        final args =
+            ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+
+        return ModifyScreen(
+          initialName: args?['initialName'] ?? '',
+          initialDescription: args?['initialDescription'] ?? '',
+          initialDate: args?['initialDate'],
+          taskId: args?['taskId'],
+          isGoogleTask: args?['isGoogleTask'] ?? false,
+          taskListId: args?['taskListId'],
+          initialTasks: const [],
+        );
+      }
     };
   }
 }
